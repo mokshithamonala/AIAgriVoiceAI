@@ -1,100 +1,180 @@
-# AgriVoice AI
+# 🌱 AgriVoice AI – Multilingual Voice-Based Agricultural Assistant
 
-A multilingual, voice-first agricultural guidance demo built with React, FastAPI, Gnani Prisma v3.0 (speech-to-text), and Gnani Timbre (text-to-speech).
+AgriVoice AI is a multilingual, voice-first agricultural guidance application that helps farmers interact with an agricultural assistant using voice or text in their preferred language.
 
-## Important honesty note
-The included `farming_service.py` is a small **rule-based starter knowledge engine**, not a generative LLM and not an expert crop-diagnosis system. It returns cautious general guidance for a few symptom categories in Telugu, Hindi, Tamil, Kannada, and English. Expand it with locally verified agricultural sources or connect a vetted LLM/RAG service before describing it as expert AI advice.
+## 🔗 Project Links
 
-## Requirements
-- Windows 10/11
-- Python 3.10 or newer
-- Node.js 20 or newer
-- Gnani API key from https://app.gnani.ai/
+- 🚀 **Live Demo (Vercel):** [Open AgriVoice AI](YOUR_VERCEL_DEPLOYMENT_URL)
+- 💻 **GitHub Repository:** [AgriVoice AI](https://github.com/mokshithamonala/AIAgriVoiceAI)
 
-## 1. Extract and open
-Extract `AgriVoice-AI.zip`. Open the `AgriVoice-AI` folder in VS Code.
+---
 
-## 2. Configure the backend
-Open a terminal in VS Code:
+## ✨ Features
+
+- **Multilingual Support:** Supports Telugu, Hindi, Tamil, Kannada, and English.
+- **Voice Input:** Converts spoken queries into text using Gnani Prisma v3.0.
+- **Voice Output:** Converts assistant responses into speech using Gnani Timbre.
+- **Text-Based Queries:** Allows farmers to submit agricultural questions through text.
+- **Agricultural Guidance:** Provides general guidance through a rule-based starter knowledge engine.
+- **Responsive Interface:** Offers a simple, user-friendly experience.
+
+## 🛠️ Technologies Used
+
+| Category | Technologies |
+|---|---|
+| Frontend | React |
+| Backend | Python, FastAPI |
+| Speech-to-Text | Gnani Prisma v3.0 |
+| Text-to-Speech | Gnani Timbre |
+| API Communication | REST APIs |
+
+## 🔄 How It Works
+
+1. The farmer enters a query using voice or text.
+2. Gnani Prisma converts voice input into text.
+3. The FastAPI backend processes the query.
+4. The agricultural guidance engine generates a general response.
+5. Gnani Timbre converts the response into speech.
+6. The farmer receives the guidance in the selected language.
+
+## 📁 Project Structure
+
+```text
+AgriVoice-AI/
+│
+├── backend/
+│   ├── main.py
+│   ├── farming_service.py
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+└── README.md
+```
+
+## ⚙️ Installation and Setup
+
+### Prerequisites
+
+- Python 3.10 or later
+- Node.js 20 or later
+- Gnani API key
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/mokshithamonala/AIAgriVoiceAI.git
+cd AIAgriVoiceAI
+```
+
+### 2. Backend Setup
+
+Navigate to the backend directory:
 
 ```powershell
 cd backend
+```
+
+Create and activate a virtual environment:
+
+```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
+
+```powershell
 pip install -r requirements.txt
+```
+
+Create the environment file:
+
+```powershell
 Copy-Item .env.example .env
 ```
 
-Open `backend/.env` and replace `PASTE_YOUR_GNANI_API_KEY_HERE` with your API key. Do not share the key or commit `.env`.
+Add your Gnani API key to `backend/.env`:
 
-If PowerShell blocks activation, run this once in that terminal:
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\venv\Scripts\Activate.ps1
+```env
+GNANI_API_KEY=your_api_key
 ```
 
-Start the backend:
-```powershell
+Start the backend server:
+
+```bash
 uvicorn main:app --reload --port 8000
 ```
 
+### 3. Frontend Setup
 
+Open a new terminal and navigate to the frontend directory:
 
-## 3. Configure the frontend
-Open a **second** VS Code terminal:
-
-```powershell
+```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-Open the local URL Vite prints, normally https://ai-agri-voice-ai-t6tk.vercel.app/
+Open the local development URL displayed in your terminal.
 
-## 4. Test in this order
-1. Type: `Why are my crop leaves turning yellow?` and submit. This tests the local starter knowledge engine.
-2. Select Telugu and try a short typed question.
-3. Click **Speak to AgriVoice**, allow microphone access, speak a short question, then click **Stop recording**. This tests the Prisma REST endpoint.
-4. Click **Listen** under an assistant response. This tests the Timbre endpoint.
+## 🔐 Environment Variables
 
-## 5. Gnani API details
-Prisma REST endpoint:
-`https://api.vachana.ai/stt/v3`
+| Variable | Description |
+|---|---|
+| `GNANI_API_KEY` | Authenticates requests to Gnani APIs |
+| `VITE_API_URL` | Backend API URL, if configured in the frontend |
 
-The request sends multipart fields `audio_file`, `language_code`, `preferred_language`, `format=transcribe`, and `itn_native_numerals=true`, with header `X-API-Key-ID`.
+**Security:** Keep API keys private. Never commit `.env` files or expose secret keys in frontend code.
 
-Timbre endpoint used by this demo:
-`https://api.vachana.ai/api/v1/tts/sse`
+## ☁️ Deployment
 
-The request uses the public example model `vachana-voice-v3`, voice `Karan`, and an MP3 audio configuration. The exact model/voice entitlement may vary by account. If your Gnani dashboard or current API docs show different values, update `TIMBRE_MODEL` and `TIMBRE_VOICE` in `.env`. The code expects SSE `data:` events containing base64 audio chunks; confirm the response shape against your account's API response if this endpoint changes.
+The frontend can be deployed using Vercel, while the FastAPI backend must be hosted separately.
 
-Official references:
-- https://www.gnani.ai/resources/prisma-v3
-- https://www.gnani.ai/text-to-speech-api
-- https://docs.gnani.ai/
-- https://app.gnani.ai/
+Deployment configuration:
 
-## 6. Troubleshooting
-- **503 API key missing:** check `backend/.env`, ensure the variable is `GNANI_API_KEY=...`, then restart FastAPI.
-- **401/403 from Gnani:** verify the key is an API key created in the Gnani dashboard and that your account has access to the selected model.
-- **Prisma file/format error:** try a short audio file from the dashboard's supported upload flow. Browser audio MIME formats can vary; if your account rejects WebM, use the upload-audio button with a WAV/MP3 file or add audio conversion with FFmpeg.
-- **Timbre returns no audio chunks:** check your account's current Timbre model, voice, endpoint, and response shape in Gnani API Docs. The public page example is `vachana-voice-v3` and voice `Karan`.
-- **Microphone blocked:** use localhost in Chrome/Edge and allow microphone permission.
-- **CORS:** when deployed, set `FRONTEND_ORIGINS` in the backend environment to your exact frontend URL.
+- **Frontend Hosting:** Vercel
+- **Backend:** FastAPI hosting platform
+- **Frontend API Configuration:** Set `VITE_API_URL` to the deployed backend URL.
+- **Backend CORS:** Allow requests from the deployed frontend domain.
 
-## 7. Before public deployment
-- Do not publish `.env`.
-- Set `GNANI_API_KEY` as a secret environment variable in your backend hosting service.
-- Set frontend `VITE_API_URL` to your deployed backend URL before building.
-- Set backend `FRONTEND_ORIGINS` to your deployed frontend URL.
-- Test every endpoint on the deployed site.
-- Add a privacy notice before collecting real farmer recordings. Do not store recordings in this starter app.
-- Do not present the rule-based guidance as a medical/agronomic diagnosis. Ask local agricultural experts to review crop-specific recommendations.
+### Live Application
 
-## 8. Submission preparation
-- Record a real end-to-end demo showing a Gnani Prisma transcription and a Gnani Timbre spoken answer.
-- Show the project working, not just screenshots.
-- Publish a demo video on LinkedIn or X, tag Gnani AI, and use:
-  - `#GnaniAI`
-  - `#GreatIndianAIInternshipChallenge`
-- Submit the public project/demo links through the official submission form before the deadline stated in your registration email.
+🚀 **[Visit AgriVoice AI](https://ai-agri-voice-ai-t6tk.vercel.app/)**
+
+## ⚠️ Implementation Note
+
+The current `farming_service.py` implementation uses a rule-based starter knowledge engine. It provides general guidance for a limited set of agricultural queries. It is not a generative AI model or an expert crop-diagnosis system.
+
+## 🔮 Future Enhancements
+
+- Expand the agricultural knowledge base using verified agricultural resources.
+- Support additional regional languages.
+- Improve crop-specific recommendations.
+- Integrate a verified RAG-based agricultural knowledge system.
+- Enhance accessibility and mobile usability.
+
+## 🙌 Acknowledgements
+
+- [Gnani AI](https://www.gnani.ai/)
+- [Gnani Prisma Documentation](https://www.gnani.ai/resources/prisma-v3)
+- [Gnani Text-to-Speech API](https://www.gnani.ai/text-to-speech-api)
+- [Gnani Developer Documentation](https://docs.gnani.ai/)
+
+---
+
+**Built to make agricultural guidance more accessible through multilingual voice technology.**
