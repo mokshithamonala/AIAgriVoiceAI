@@ -38,10 +38,7 @@ Start the backend:
 uvicorn main:app --reload --port 8000
 ```
 
-Check:
-- http://localhost:8000
-- http://localhost:8000/docs
-- http://localhost:8000/api/health
+
 
 ## 3. Configure the frontend
 Open a **second** VS Code terminal:
@@ -52,7 +49,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL Vite prints, normally http://localhost:5173.
+Open the local URL Vite prints, normally https://ai-agri-voice-ai-t6tk.vercel.app/
 
 ## 4. Test in this order
 1. Type: `Why are my crop leaves turning yellow?` and submit. This tests the local starter knowledge engine.
